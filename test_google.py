@@ -10,7 +10,8 @@ import json
 USERNAME = os.environ.get("USERNAME")
 KEY = os.environ.get("KEY")
 
-LOCAL_URL = "http://127.0.0.1:4444/wd/hub"
+SELENIUM_IP = os.environ.get("SELENIUM_IP","127.0.0.1")
+LOCAL_URL = "http://%s:4444/wd/hub" % SELENIUM_IP
 SAUCE_URL = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub" % (USERNAME, KEY)
 SELENIUM_URL = LOCAL_URL
 
@@ -53,7 +54,7 @@ class GoogleImageSearch(unittest.TestCase):
                                  "or contains(.,'elephant')]").click()
 
         page_text = dr.find_element_by_tag_name('body').text
-        self.assertRegex(page_text, re.compile('(слон|elephant)',re.I))
+        self.assertRegexpMatches(page_text, re.compile(u'(слон|elephant)',re.I))
         self.passed = True
 
     def tearDown(self):
